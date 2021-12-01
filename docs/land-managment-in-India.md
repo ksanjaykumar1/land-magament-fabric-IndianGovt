@@ -57,9 +57,10 @@ Problem with the current system
 
 ## Need For Blockchain 
 
-1. Help in cross department operation.
-2. Access management of different database by multiple parties. 
-3. On-chain Verifiable Cryptographic audit log, Maintain log of all transaction with accurate digital signature of the different parties involved i.e. helps in non-repudiation, a entity cannot deny that they are not responsible. Will be easy to track the officer or party responsible for particular transaction.
+1. Help in **cross department operation**.
+2. **Access management** of multiple ledgers which are maintained by different departments. 
+3. **Digitally executable legally binding transactions**. 
+4. **On-chain Verifiable Cryptographic audit log**, Maintain log of all transaction with accurate digital signature of the different parties involved i.e. helps in non-repudiation, a entity cannot deny that they are not responsible. Will be easy to track the officer or party responsible for particular transaction.
 
 
 
