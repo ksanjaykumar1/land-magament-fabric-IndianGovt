@@ -264,10 +264,32 @@ function createChannel() {
   scripts/createChannel.sh $CHANNEL_NAME $CLI_DELAY $MAX_RETRY $VERBOSE
 }
 
+# call the script to create the channel, join the peers of org1 and org2,
+# and then update the anchor peers for each organization
+function createAuthChannel() {
+  # Bring up the network if it is not already up.
+
+  if [ ! -d "organizations/peerOrganizations" ]; then
+    infoln "Bringing up network"
+    networkUp
+  fi
+
+  # now run the script that creates a channel. This script uses configtxgen once
+  # to create the channel creation transaction and the anchor peer updates.
+  scripts/createAuthChannel.sh $AUTH_CHANNEL_NAME $CLI_DELAY $MAX_RETRY $VERBOSE
+}
 
 ## Call the script to deploy a chaincode to the channel
 function deployCC() {
   scripts/deployCC.sh $CHANNEL_NAME $CC_NAME $CC_SRC_PATH $CC_SRC_LANGUAGE $CC_VERSION $CC_SEQUENCE $CC_INIT_FCN $CC_END_POLICY $CC_COLL_CONFIG $CLI_DELAY $MAX_RETRY $VERBOSE
+
+  if [ $? -ne 0 ]; then
+    fatalln "Deploying chaincode failed"
+  fi
+}
+
+function deployAuthCC() {
+  scripts/deployAuthCC.sh $AUTH_CHANNEL_NAME $CC_NAME $CC_SRC_PATH $CC_SRC_LANGUAGE $CC_VERSION $CC_SEQUENCE $CC_INIT_FCN $CC_END_POLICY $CC_COLL_CONFIG $CLI_DELAY $MAX_RETRY $VERBOSE
 
   if [ $? -ne 0 ]; then
     fatalln "Deploying chaincode failed"
@@ -308,6 +330,7 @@ MAX_RETRY=5
 CLI_DELAY=3
 # channel name defaults to "mychannel"
 CHANNEL_NAME="mychannel"
+AUTH_CHANNEL_NAME="aadhar"
 # chaincode name defaults to "NA"
 CC_NAME="NA"
 # chaincode path defaults to "NA"
@@ -358,6 +381,9 @@ if [[ $# -ge 1 ]] ; then
   key="$1"
   if [[ "$key" == "createChannel" ]]; then
       export MODE="createChannel"
+      
+  elif [[ "$key" == "createAuthChannel" ]]; then
+      export MODE="createAuthChannel"
       shift
   fi
 fi
@@ -448,12 +474,17 @@ if [ "$MODE" == "up" ]; then
 elif [ "$MODE" == "createChannel" ]; then
   infoln "Creating channel '${CHANNEL_NAME}'."
   infoln "If network is not up, starting nodes with CLI timeout of '${MAX_RETRY}' tries and CLI delay of '${CLI_DELAY}' seconds and using database '${DATABASE} ${CRYPTO_MODE}"
+elif [ "$MODE" == "createAuthChannel" ]; then
+  infoln "Creating channel '${AUTH_CHANNEL_NAME}'."
+  infoln "If network is not up, starting nodes with CLI timeout of '${MAX_RETRY}' tries and CLI delay of '${CLI_DELAY}' seconds and using database '${DATABASE} ${CRYPTO_MODE}"
 elif [ "$MODE" == "down" ]; then
   infoln "Stopping network"
 elif [ "$MODE" == "restart" ]; then
   infoln "Restarting network"
 elif [ "$MODE" == "deployCC" ]; then
   infoln "deploying chaincode on channel '${CHANNEL_NAME}'"
+elif [ "$MODE" == "deployAuthCC" ]; then
+  infoln "deploying chaincode on channel '${AUTH_CHANNEL_NAME}'"
 else
   printHelp
   exit 1
@@ -463,8 +494,12 @@ if [ "${MODE}" == "up" ]; then
   networkUp
 elif [ "${MODE}" == "createChannel" ]; then
   createChannel
+elif [ "${MODE}" == "createAuthChannel" ]; then
+  createAuthChannel
 elif [ "${MODE}" == "deployCC" ]; then
   deployCC
+elif [ "${MODE}" == "deployAuthCC" ]; then
+  deployAuthCC
 elif [ "${MODE}" == "down" ]; then
   networkDown
 else
