@@ -2,9 +2,7 @@
 
 ## Current System 
 
-" India currently follows a system of presumptive land titling. This means that land records are maintained, with information on possession, which is determined through details of past transactions. Ownership, then, is established on the basis of current possession. Registration of land is actually a registration of transactions, such as sale deeds, records of inheritance, mortgage and lease. Holding registration papers does not actually involve the government or the legal framework guaranteeing the ownership title of the land." [1]
-
-
+India currently follows a system of presumptive land titling. This means a person is presumed to be the owner of land unless someone proves otherwise. 
 
 The government maintains multiple types of land records at different Department: 
 
@@ -61,7 +59,7 @@ Problem with the current system
 2. **Access management** of multiple ledgers which are maintained by different departments. 
 3. **Digitally executable legally binding transactions**. 
 4. **On-chain Verifiable Cryptographic audit log**, Maintain log of all transaction with accurate digital signature of the different parties involved i.e. helps in non-repudiation, a entity cannot deny that they are not responsible. Will be easy to track the officer or party responsible for particular transaction.
-
+5. **Single source of truth**, In centralized systems, it is hard to synchronize the data from various subdivisions. Using Blockchain, various subdivisions can operate on a single ledger and can maintain consistency and integrity. 
 
 
 ## Reference 
